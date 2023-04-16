@@ -7,48 +7,61 @@ import { StyleSheet, Text, View, Image, FlatList, useWindowDimensions, ScrollVie
 import CartListItem from '../../components/CartListItem';
 
 // Data
-import cart from '../cart';
+import { useSelector } from 'react-redux';
+import { selectDeliveryPrice, selectSubtotal, selectTotal } from '../../store/cartSlice';
+
+
+
+
+const ShoppingCartTotals = () => {
+
+    const subtotal = useSelector(selectSubtotal);
+    const deliveryFee = useSelector(selectDeliveryPrice);
+    const total = useSelector(selectTotal);
+
+    return (
+    <View style={styles.totalsContainer}>
+        <View style={styles.row}>
+            <Text style={styles.text}>
+                Subtotal
+            </Text>
+            <Text style={styles.text}>
+                ${subtotal}
+            </Text>
+        </View>
+        <View style={styles.row}>
+            <Text style={styles.text}>
+                Delivery
+            </Text>
+            <Text style={styles.text}>
+                ${deliveryFee}
+            </Text>
+        </View>
+        <View style={styles.row}>
+            <Text style={styles.textBold}>
+                Total
+            </Text>
+            <Text style={styles.textBold}>
+                ${total}
+            </Text>
+        </View>
+    </View>
+)
+}
 
 
 
 const ShoppingCart = () => {
 
-    const ShoppingCartTotals = () => (
-
-            <View style={styles.totalsContainer}>
-                <View style={styles.row}>
-                    <Text style={styles.text}>
-                        Subtotal
-                    </Text>
-                    <Text style={styles.text}>
-                        $420
-                    </Text>
-                </View>
-                <View style={styles.row}>
-                    <Text style={styles.text}>
-                        Delivery
-                    </Text>
-                    <Text style={styles.text}>
-                        $69
-                    </Text>
-                </View>
-                <View style={styles.row}>
-                    <Text style={styles.textBold}>
-                        Total
-                    </Text>
-                    <Text style={styles.textBold}>
-                        $1500
-                    </Text>
-                </View>
-            </View>
-        
-    )
+    // here we are getting the name that we set of the selector in the slice
+    // and getting the state name
+    const cartItems = useSelector((state: any) => state.cart.items)
     
     return(
     <>
         <FlatList
         // Array of data we will utilize
-            data={cart}
+            data={cartItems}
         // the .map for react native, for each loop
             renderItem={({item}) => <CartListItem cartItem={item}/>}
             ListFooterComponent={ShoppingCartTotals}
@@ -74,6 +87,7 @@ const styles = StyleSheet.create({
         paddingTop: 10,
         borderColor: "gainsboro",
         borderTopWidth: 1,
+        paddingBottom: 100,
     },
     row:{
         flexDirection: "row",

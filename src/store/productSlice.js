@@ -3,7 +3,9 @@ import products from "../data/products";
 
 const initialState ={ 
 
-    product: products,
+    products: products,
+    selectedProduct: null,
+
 
 };
 
@@ -11,6 +13,13 @@ export const productSlice = createSlice({
 
     name:"products",
     initialState,
-    reducers: {}
+    reducers: {
+        // these are the selectors
+        setSelectedProduct: (state, action) => {
+            const productId = action.payload;
+            state.selectedProduct = state.products.find((p) => p.id === productId);
+        }
+
+    }
 
 })

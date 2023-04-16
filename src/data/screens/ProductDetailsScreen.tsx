@@ -8,17 +8,40 @@ import { StyleSheet, Text, View, Image, FlatList, useWindowDimensions, ScrollVie
 
 // Data
 import products from "../products"
+import { cartSlice } from '../../store/cartSlice';
+import { useSelector, useDispatch } from "react-redux";
+
+
 
 
 const ProductDetailsScreen = () => {
 
-    const product = products[0];
+    const product = useSelector((state: any) => state.products.selectedProduct);
+
+    // we bring this from the redux toolkit to call actions
+    const dispatch = useDispatch();
+
 
     // we get the width of the screen to get a dynamic size and set it as our width in styles for images
     const {width} = useWindowDimensions();
 
+
+
     const addToCart = () => {
-        console.warn("Add to Cart");
+        // we call the dispatch to dispatch the action
+        // we call the name of the slice of the redux we want to use
+        // we call the action
+        // we call the action name
+        // and we push the object that we named/set inside the redux slice these names need to match
+
+        // we need to push the key and value but when they are the same just push the payload like so
+        // otherwise its like this        dispatch(cartSlice.actions.addCartItem({key: value}))
+        // the key is the name we set of the payload inside of the slice 
+        // const newProduct = action.payload.product;
+        // the value is the name we are pushing or passing down the data stream
+        // const product = useSelector((state: any) => state.products.selectedProduct);
+
+        dispatch(cartSlice.actions.addCartItem({product}))
 
     }
 
