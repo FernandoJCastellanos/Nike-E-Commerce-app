@@ -24,7 +24,7 @@ export const cartSlice = createSlice({
             // here we try to find if the item being pushed already exist in the state
             //the cartItem is from the props being passed down we are updating it
             const cartItem = state.items.find(
-                (item) => item.product.id === newProduct.id
+                (item) => item.product._id === newProduct._id
             );
             if(cartItem) {
                 cartItem.quantity += 1;
@@ -44,7 +44,7 @@ export const cartSlice = createSlice({
         changeQuantity: (state, action) => {
             const { productId, amount } = action.payload;
             const cartItem = state.items.find(
-                (item) => item.product.id === productId
+                (item) => item.product._id === productId
                 );
             if (cartItem) {
                 cartItem.quantity += amount;
@@ -52,6 +52,9 @@ export const cartSlice = createSlice({
             if(cartItem.quantity <= 0){
                 state.items = state.items.filter((item) => item !== cartItem);
             }
+        },
+        clear: (state) => {
+            state.items = []
         },
     }
 // after we set these up we trigger the reducers

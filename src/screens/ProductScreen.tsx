@@ -1,14 +1,14 @@
 // Environment
-import { StyleSheet, Text, View, Image, FlatList, Pressable } from 'react-native';
+import { StyleSheet, Text, View, Image, FlatList, Pressable, ActivityIndicator } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 // Components
 
 
 // Data
-import products from "../products"
-import { productSlice } from '../../store/productSlice';
-
+import products from "../data/products"
+import { productSlice } from '../store/productSlice';
+import { useGetProductsQuery } from '../store/apiSlice';
 
 
 
@@ -18,10 +18,21 @@ const ProductScreen = ( {navigation}: any )  => {
     // we bring this from the redux toolkit to call actions
     const dispatch = useDispatch();
 
-    // state.products.products = state.reducername.initialstatename
-    const products = useSelector((state : any) => state.products.products);
 
+    // dummy data
+    // const products = useSelector((state : any) => state.products.products);
 
+    const {data, isLoading, error} = useGetProductsQuery(undefined);
+    console.log(error);
+    if (isLoading) {
+        return <ActivityIndicator />;
+    }
+
+    if (error) {
+        return <Text>Error Fetching products: {error.error}</Text>
+    }
+1
+    const products = data.data;
 
     return(
         <View>
@@ -32,9 +43,9 @@ const ProductScreen = ( {navigation}: any )  => {
                         onPress={()=> {
 
                         // the dispatch is calling selector and the action and calling the payload
-                        dispatch(productSlice.actions.setSelectedProduct(item.id)); 
+                        // dispatch(productSlice.actions.setSelectedProduct(item.id)); 
 
-                        navigation.navigate("Product Details");
+                        navigation.navigate("Product Details", {id: item._id});
                     }}
                         style={styles.itemContainer}
                         >
